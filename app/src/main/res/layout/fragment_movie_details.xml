@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="io.github.ardaltunyay.moviechallenge.ui.movie_details.model.MovieDetailsActionState" />
+
+        <variable
+            name="viewModel"
+            type="io.github.ardaltunyay.moviechallenge.ui.movie_details.MovieDetailsViewModel" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.movie_details.MovieDetailsFragment">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/glCenterHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".5" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/glCenterVertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".5" />
+
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupContent"
+                visibleWhen="@{viewModel.actionState.visibility}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="ivBackDropImage, ivPosterImage, rvGenres, tvMovieOverview" />
+
+            <ProgressBar
+                android:id="@+id/pbLoadingMovieDetails"
+                visibleWhen="@{!viewModel.actionState.visibility}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="7dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbarMovieDetails"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                navigationOnClick="@{() -> viewModel.onBackClicked()}"
+                android:layout_width="0dp"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:title="@{viewModel.movieDetails.movieTitle}" />
+
+            <ImageView
+                android:id="@+id/ivBackDropImage"
+                imageFromUrl="@{viewModel.movieDetails.backdropImage}"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="40dp"
+                android:alpha=".5"
+                android:background="?attr/colorBackgroundFloating"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="@id/ivPosterImage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbarMovieDetails"
+                tools:src="@tools:sample/backgrounds/scenic" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivPosterImage"
+                imageFromUrl="@{viewModel.movieDetails.posterImage}"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:background="?attr/colorBackgroundFloating"
+                android:elevation="6dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="@id/glCenterHorizontal"
+                app:layout_constraintEnd_toEndOf="@id/glCenterVertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbarMovieDetails"
+                tools:layout_width="200dp"
+                tools:src="@tools:sample/avatars" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvAverageVote"
+                visibleWhen="@{viewModel.actionState.visibility &amp;&amp; viewModel.movieDetails.averageVoteVisibility}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@color/teal_200"
+                android:elevation="6dp"
+                android:padding="6dp"
+                android:text="@{viewModel.movieDetails.averageVote}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@id/ivPosterImage"
+                app:layout_constraintStart_toStartOf="@id/ivPosterImage"
+                tools:text="7.4" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvGenres"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal"
+                app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                app:layout_constraintBottom_toBottomOf="@id/ivBackDropImage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/glCenterVertical"
+                tools:itemCount="3"
+                tools:listitem="@layout/list_item_genre" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvMovieOverview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:lineSpacingExtra="4sp"
+                android:text="@{viewModel.movieDetails.movieOverview}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ivPosterImage"
+                tools:text="Lorem ipsum sit amet" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

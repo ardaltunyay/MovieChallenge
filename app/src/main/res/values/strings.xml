@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Movie Challenge</string>
+
+    <string name="empty" />
+    <!-- Error messages -->
+    <string name="error_general_message">Error! Please try again.</string>
+    <string name="error_internet_connection">No internet connection! Please try again.</string>
+
+    <!-- Search movies screen messages -->
+    <string name="search_movies_searchbar_message">Search movie</string>
+    <string name="search_movies_idle_state">You can find a movie you want using the search bar</string>
+    <string name="search_movies_empty_list_state">No results were found</string>
+
+</resources>

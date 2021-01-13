@@ -1,0 +1,114 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        applicationId "io.github.ardaltunyay.moviechallenge"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        dataBinding true
+    }
+
+    def MOVIE_DB_API_KEY = "ENTER YOUR API KEY"
+
+    flavorDimensions "type"
+    productFlavors {
+        dev {
+            dimension "type"
+            applicationIdSuffix ".dev"
+            buildConfigField "String", "API_KEY", "\"${MOVIE_DB_API_KEY}\""
+            buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
+            buildConfigField "String", "BASE_IMAGE_URL", "\"https://image.tmdb.org/t/p/\""
+        }
+
+        prod {
+            dimension "type"
+            buildConfigField "String", "API_KEY", "\"${MOVIE_DB_API_KEY}\""
+            buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
+            buildConfigField "String", "BASE_IMAGE_URL", "\"https://image.tmdb.org/t/p/\""
+        }
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    //AndroidX
+    implementation androidX.coreKtx
+    implementation androidX.appCompat
+    implementation androidX.constraint
+    implementation androidX.recyclerView
+    implementation androidX.paging2
+    implementation androidX.legacy
+    implementation androidX.lifecycle.liveDataKtx
+    implementation androidX.lifecycle.viewModelKtx
+
+    //Material Design
+    implementation androidX.material
+
+    //Retrofit
+    implementation square.retrofit.retrofit
+    implementation square.retrofit.converterGson
+
+    //Okhttp
+    implementation platform(square.okhttp.bom)
+    implementation square.okhttp.okhttp
+    implementation square.okhttp.loggingInterceptor
+
+    //Gson
+    implementation google.gson
+
+    //Navigation component
+    implementation navigation.fragmentKtx
+    implementation navigation.uiKtx
+
+    //Koin for dependency injection
+    implementation koin.core
+    implementation koin.viewModel
+
+    //Glide for images
+    implementation thirdParty.glide.glide
+    kapt thirdParty.glide.compiler
+
+   //Flexbox for flexible layout manager
+    implementation google.flexbox
+
+    //Testing
+    testImplementation unitTest.jUnit
+    testImplementation unitTest.mockk //For mocking
+    testImplementation unitTest.kotlinTestRunner
+    testImplementation unitTest.jFixture // for auto creating object
+    testImplementation unitTest.androidXCoreTesting
+    testImplementation unitTest.coroutinesTest
+
+    androidTestImplementation androidTest.extJUnit
+    androidTestImplementation androidTest.espresso
+}

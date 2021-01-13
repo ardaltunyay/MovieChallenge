@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="io.github.ardaltunyay.moviechallenge.ui.search_movies.model.MovieUIModel" />
+
+        <variable
+            name="movieUIModel"
+            type="MovieUIModel" />
+
+        <variable
+            name="clickListener"
+            type="io.github.ardaltunyay.moviechallenge.core.listeners.ItemClickListener&lt;MovieUIModel>" />
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:onClick="@{() -> clickListener.onClicked(movieUIModel)}">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/ivPosterImage"
+                imageFromUrl="@{movieUIModel.posterImage}"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="?attr/colorBackgroundFloating"
+                android:contentDescription="@{movieUIModel.movieTitle}"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toTopOf="@id/tvTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                visibleWhen="@{movieUIModel.averageVoteVisibility}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@color/teal_200"
+                android:padding="4dp"
+                android:text="@{movieUIModel.averageVote}"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@id/ivPosterImage"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="7.4" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:singleLine="true"
+                android:text="@{movieUIModel.movieTitle}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="Movie Title" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>
